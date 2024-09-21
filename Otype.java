@@ -18,7 +18,7 @@ public class Otype {
 
     public void executeO(Stage stage, int opcode) {
         if (opcode == 6) {  // halt instruction
-            stage.setHalt();
+            stage.setlast();;
         } else if (opcode == 7) {  // noop instruction
             // does nothing.
         }

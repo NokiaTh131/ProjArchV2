@@ -19,9 +19,9 @@ public class Simulator {
         Stage stage = new Stage();
         int[] memory = stage.getMemory();
         int pc = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 try {
                     memory[pc] = Integer.parseInt(line.trim());
                 } catch (NumberFormatException e) {

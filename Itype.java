@@ -20,7 +20,7 @@ public class Itype {
         }
         return num;
     }
-
+    
     // Method to execute I-type instructions based on opcode
     public void executeI(Stage stage, int opcode, int rs, int rt, int offset) {
         int[] reg = stage.getRegister();

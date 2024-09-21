@@ -1,4 +1,3 @@
-import java.util.Base64.Decoder;
 
 public class Stage {
     private final int MEMORY_SIZE = 65536;
@@ -10,7 +9,7 @@ public class Stage {
     private int pc;                  // Program counter
     private int nextPc;              // Next program counter
     private int stepCount;           // Number of steps
-    private final Decoder decoder;   // Instruction decoder
+    private Decoder decoder;   // Instruction decoder
     private int instructionCount;    // Instruction count to display
     private boolean isLast;          // is last execute
     private final StringBuilder sb;  // For printing state details
@@ -23,25 +22,27 @@ public class Stage {
         nextPc = 0;
         isLast = false;
         stepCount = 0;
-        decoder = Decoder.decoderInstance();
+        decoder = new Decoder();
         sb = new StringBuilder();
     }
 
     //execute
-    public void iterate() {
+    public synchronized void iterate() {
         nextPc = (pc + 1) % MEMORY_SIZE;
         decoder.decode(this);
-        register[0] = 0;  //reg[0] always be 0
+        register[0] = 0;  // reg[0] must always be 0
         pc = nextPc;
         stepCount++;
-}
+    }
 
     //simulator
     public void simulate() {
-        printState();
         while (!isLast) {
+            printState();
             iterate();
+
         }
+        printState();
     }
 
     //get instruction
@@ -85,7 +86,7 @@ public class Stage {
 
     
     //print state
-    public void printState() {
+    public synchronized void printState() {
         sb.setLength(0); // Clear stringBuilder
         
         //topic fot last state

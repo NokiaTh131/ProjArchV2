@@ -1,9 +1,7 @@
-import java.util.HashSet;
-import java.util.Set;
 
 public class Decoder {
 
-    private Decoder() {
+    public Decoder() {
     }
 
     public static final int OPCODE_ADD = 0b000;
@@ -21,42 +19,34 @@ public class Decoder {
      * @param instruction The raw binary instruction.
      * @return Decoded Instruction object.
      */
-    public static Instruction decode(int instruction) {
+    public void decode(Stage stage) {
+        int instruction = stage.getInstruction();
         // Extract opcode (bits 24-22)
-        int opcode = (instruction >>> 22) & 0b111;
+        int opcode = (instruction >> 22) & 0b111;
         switch (opcode) {
-            case OPCODE_ADD:
-            case OPCODE_NAND:
+            case OPCODE_ADD , OPCODE_NAND:
                 // R-type: opcode, rs (21-19), rt (18-16), rd (2-0)
                 int rsR = (instruction >>> 19) & 0b111;
                 int rtR = (instruction >>> 16) & 0b111;
                 int rd = instruction & 0b111;
-                return new Instruction(opcode, rsR, rtR, rd);
+                Rtype.getInstance().executeR(stage, opcode, rsR, rtR, rd);
 
-            case OPCODE_LW:
-            case OPCODE_SW:
-            case OPCODE_BEQ:
+            case OPCODE_BEQ ,OPCODE_SW ,OPCODE_LW:
                 // I-type: opcode, rs (21-19), rt (18-16), offset (15-0)
                 int rsI = (instruction >>> 19) & 0b111;
                 int rtI = (instruction >>> 16) & 0b111;
-                short offset = (short) (instruction & 0xFFFF);
-                return new Instruction(opcode, rsI, rtI, offset);
+                int offset = instruction & 0xFFFF;
+                Itype.getInstance().executeI(stage, opcode, rsI, rtI, offset);
 
             case OPCODE_JALR:
                 // J-type: opcode, rs (21-19), rd (18-16)
                 int rsJ = (instruction >>> 19) & 0b111;
                 int rdJ = (instruction >>> 16) & 0b111;
-                return new Instruction(opcode, rsJ, rdJ);
+                Jtype.getInstance().executeJ(stage, opcode, rsJ, rdJ);
 
-            case OPCODE_HALT:
-            case OPCODE_NOOP:
+            case OPCODE_NOOP,OPCODE_HALT:
                 // O-type: opcode only
-                return new Instruction(opcode);
-
-            default:
-                System.err.printf("Unknown opcode: 0b%03d%n", opcode);
-                System.exit(1);
-                return null; // Unreachable, but required for compilation
+                Otype.getInstance().executeO(stage, opcode);
         }
     }
 }
