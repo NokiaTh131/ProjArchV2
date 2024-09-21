@@ -24,7 +24,6 @@ public class Decoder {
     public static Instruction decode(int instruction) {
         // Extract opcode (bits 24-22)
         int opcode = (instruction >>> 22) & 0b111;
-
         switch (opcode) {
             case OPCODE_ADD:
             case OPCODE_NAND:

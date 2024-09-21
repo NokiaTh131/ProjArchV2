@@ -37,4 +37,5 @@ public class Simulator {
             stage.simulate();
             System.exit(0);
         }
+        
 }
