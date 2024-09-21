@@ -151,11 +151,11 @@ int readAndParse(FILE *inFilePtr, char *label, char *opcode, char *arg0,
     }
 
     /* check for line too long (by looking for a \n) */
-    if (strchr(line, '\n') == NULL) {
-        /* line too long */
-	    printf("error: line too long\n");
-	    exit(1);
-    }
+    // if (strchr(line, '\n') == NULL) {
+    //     /* line too long */
+	//     printf("error: line too long\n");
+	//     exit(1);
+    // }
 
     /* is there a label? */
     ptr = line;
