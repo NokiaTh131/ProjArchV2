@@ -4,7 +4,7 @@
 #include <ctype.h>
 
 #define MAXLINELENGTH 1000
-#define MAX_LABELS 20
+#define MAX_LABELS 5000
 
 typedef struct {
     char label[MAXLINELENGTH];
@@ -59,22 +59,54 @@ int main(int argc, char *argv[])
         int machineCode;
         if (!strcmp(opcode, "add") || !strcmp(opcode, "nand")) {
             int opbi = strcmp(opcode, "add") == 0 ? 0 : 1;
-            int regA = atoi(arg0);
-            int regB = atoi(arg1);
-            int rd = atoi(arg2);
+            int regA;
+            int regB;
+            int rd;
+            //check isAlpha regB
+            if (isalpha(arg2[0])) {
+                regB = resolveLabel(arg2);
+            } else {
+                regB = atoi(arg2);
+            }
+            //check isAlpha regA
+            if (isalpha(arg1[0])) {
+                regA = resolveLabel(arg1);
+            } else {
+                regA = atoi(arg1);
+            }
+            //check isAlpha rd
+            if (isalpha(arg0[0])) {
+                rd = resolveLabel(arg0);
+            } else {
+                rd = atoi(arg0);
+            }
             machineCode = (opbi << 22) | (regA << 19) | (regB << 16) | rd;
         }
 
         else if (!strcmp(opcode, "lw") || !strcmp(opcode, "sw") || !strcmp(opcode, "beq")) {
             int opbi = (!strcmp(opcode, "lw")) ? 2 : (!strcmp(opcode, "sw")) ? 3 : 4;
-            int regA = atoi(arg0);
-            int regB = atoi(arg1);
+            int regA;
+            int regB;
             int offset;
+            //check isAlpha offset
             if (isalpha(arg2[0])) {
                 offset = resolveLabel(arg2);
             } else {
                 offset = atoi(arg2);
             }
+            //check isAlpha regB
+            if (isalpha(arg1[0])) {
+                regB = resolveLabel(arg1);
+            } else {
+                regB = atoi(arg1);
+            }
+            //check isAlpha regA
+            if (isalpha(arg0[0])) {
+                regA = resolveLabel(arg0);
+            } else {
+                regA = atoi(arg0);
+            }
+
             if (offset > 32767 || offset < -32768) {
                 printf("error offset bit is too much %s\n", arg2);
                 exit(1);
@@ -87,7 +119,23 @@ int main(int argc, char *argv[])
         }
 
         else if (!strcmp(opcode, "jalr")) {
-        /* do whatever you need to do for opcode "add" */
+            int opbi = 5;
+            int regA;
+            int regB;
+            //check isAlpha regB
+            if (isalpha(arg1[0])) {
+                regB = resolveLabel(arg1);
+            } else {
+                regB = atoi(arg1);
+            }
+            //check isAlpha regA
+            if (isalpha(arg0[0])) {
+                regA = resolveLabel(arg0);
+            } else {
+                regA = atoi(arg0);
+            }
+            machineCode = (opbi << 22) | (regA << 19) | (regB << 16);
+
         }
 
         else if (!strcmp(opcode, "halt") || !strcmp(opcode, "noop")) {
@@ -101,10 +149,7 @@ int main(int argc, char *argv[])
             } else {
                 field = atoi(arg0);
             }
-            if (field > 32767 || field < -32768) {
-                printf("error offset bit is too much %s\n", arg2);
-                exit(1);
-            }
+            
             machineCode = field ;
             
         }
