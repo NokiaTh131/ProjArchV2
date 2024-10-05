@@ -16,12 +16,12 @@ public class Jtype {
 
     public void executeJ(Stage stage, int opcode, int rs, int rd) {
         int[] reg = stage.getRegister();
-
         if (opcode == 5) {  // JALR instruction
             if (rd != 0) {
                 reg[rd] = stage.getPc() + 1;
             }
-            stage.setNextPc(reg[rs]);
+            if(rs != rd) {stage.setNextPc(reg[rs]);}
+            else {stage.setNextPc(reg[rd]);}
         }
     }
 }
