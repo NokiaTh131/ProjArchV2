@@ -63,16 +63,16 @@ int main(int argc, char *argv[])
             int regB;
             int rd;
             //check isAlpha regB
-            if (isalpha(arg2[0])) {
-                regB = resolveLabel(arg2);
+            if (isalpha(arg1[0])) {
+                regB = resolveLabel(arg1);
             } else {
-                regB = atoi(arg2);
+                regB = atoi(arg1);
             }
             //check isAlpha regA
-            if (isalpha(arg1[0])) {
-                regA = resolveLabel(arg1);
+            if (isalpha(arg2[0])) {
+                regA = resolveLabel(arg2);
             } else {
-                regA = atoi(arg1);
+                regA = atoi(arg2);
             }
             //check isAlpha rd
             if (isalpha(arg0[0])) {
