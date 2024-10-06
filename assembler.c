@@ -69,16 +69,16 @@ int main(int argc, char *argv[])
                 regB = atoi(arg1);
             }
             //check isAlpha regA
-            if (isalpha(arg2[0])) {
-                regA = resolveLabel(arg2);
+            if (isalpha(arg0[0])) {
+                regA = resolveLabel(arg0);
             } else {
-                regA = atoi(arg2);
+                regA = atoi(arg0);
             }
             //check isAlpha rd
-            if (isalpha(arg0[0])) {
-                rd = resolveLabel(arg0);
+            if (isalpha(arg2[0])) {
+                rd = resolveLabel(arg2);
             } else {
-                rd = atoi(arg0);
+                rd = atoi(arg2);
             }
             machineCode = (opbi << 22) | (regA << 19) | (regB << 16) | rd;
         }

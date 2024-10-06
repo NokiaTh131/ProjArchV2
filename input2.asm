@@ -20,13 +20,13 @@ main    lw 0 sp neg1         ; load sp with -1
         halt                 ; end program
 mul     sw 0 sp sp           ; save sp onto stack
         sw 0 ra ra           ; save ra onto stack
-        add a0 x0 x0         ; initialize sum (a0) to 0
+        add x0 x0 a0         ; initialize sum (a0) to 0//
         lw 0 t1 neg1         ; load -1 into t1
         lw 0 sp c65536       ; load 65536 into sp (2^16)
         lw 0 t0 pos1         ; initialize t0 to 1 (for bit shifting)
-muladd  nand ra a1 t0        ; ra = ~(a1 & t0)
+muladd  nand a1 t0 ra        ; ra = ~(a1 & t0)
         beq t1 ra skAdd      ; if t1 == ra (i.e., if ra is -1), skip addition
-        add a0 a2 a0         ; sum (a0) += a2 (multiplier)
+        add a2 a0 a0         ; sum (a0) += a2 (multiplier)
 skAdd   add t0 t0 t0         ; t0 <<= 1 (bit shift left)
         add a2 a2 a2         ; a2 <<= 1 (bit shift left)
         beq sp t0 mulret     ; if t0 == 2^16, return from 'mul'
