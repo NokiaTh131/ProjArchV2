@@ -228,6 +228,7 @@ void firstPass(FILE *inFilePtr) {
     while (readAndParse(inFilePtr, label, opcode, arg0, arg1, arg2)) {
         // Store label addresses
         if (strlen(label) > 0) {
+            
             for (int i = 0; i < labelCount; i++) {
                 if (strcmp(labels[i].label, label) == 0) {
                     printf("error Duplicate label '%s' found at address %d\n", label, address);
@@ -237,6 +238,11 @@ void firstPass(FILE *inFilePtr) {
             }
             strcpy(labels[labelCount].label, label);
             labels[labelCount].address = address;
+            if (!isalpha(labels[labelCount].label[0])) {
+                printf("error: label '%s' must start with a letter\n", label);
+                exit(1);
+                return;
+            }
             if(strlen(labels[labelCount].label) > 6) {
                 printf("error label '%s' too long %d\n", label, address);
                 exit(1);
