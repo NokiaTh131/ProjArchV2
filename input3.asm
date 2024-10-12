@@ -1,47 +1,47 @@
 x0     beq 0 0 main     ; Branch to main
-a1     noop             ; function argument 1 (n)
-a2     noop             ; function argument 2 (r)
-a0     noop             ; return value (for the combination result)
-t0     noop             ; temp 0
-sp     noop             ; stack pointer
-t1     noop             ; temp 1
-ra     noop             ; return address
+x12     noop             ; function argument 1 (n)
+x13     noop             ; function argument 2 (r)
+x10     noop             ; return value (for the combination result)
+x5     noop             ; temp 0
+x2     noop             ; stack pointer
+x6     noop             ; temp 1
+x1     noop             ; return address
 pos1   .fill 1          ; Constant 1
 pos4   .fill 4          ; Constant 4 (for stack increment)
 neg4   .fill -4         ; Constant -4 (for stack decrement)
-cnrAdr .fill cnr        ; Address of the Cnr function
+cnrAddr .fill cnr        ; Address of the Cnr function
 n      .fill 7          ; n = 7 (initial value for n)
 r      .fill 3          ; r = 3 (initial value for r)
-main    lw 0 sp spAddr      ; sp = stack address
-        lw 0 a1 n           ; a1 = n
-        lw 0 a2 r           ; a2 = r
-        lw 0 t0 cnrAdr      ; Load the address of Cnr into t0
-        jalr t0 ra          ; Jump to Cnr function
-        halt                ; End of program
-cnr     beq 0 a2 basCnr     ; if r == 0, go to basCnr (base case)
-        beq a1 a2 basCnr    ; if n == r, go to basCnr (base case)
-        lw 0 t0 cnrAdr      ; Load the address of Cnr into t0 (for recursion)
-        lw 0 t1 pos4
-        add t1 sp sp        ; sp += 4 (allocate stack space)///
-        sw sp ra -4         ; Store return address (ra) at sp-4
-        sw sp a2 -3         ; Store r at sp-3
-        sw sp a1 -2         ; Store n at sp-2
-        nand 0 0 t1         ; Prepare to decrement n (with negation)
-        add t1 a1 a1        ; n -= 1///
-        jalr t0 ra          ; Recursive call: Cnr(n-1, r)
-        sw sp a0 -1         ; Store result of Cnr(n-1, r) at sp-1
-        nand 0 0 t1         ; Prepare to decrement r
-        add t1 a2 a2        ; r -= 1///
-        jalr t0 ra          ; Recursive call: Cnr(n-1, r-1)
-        lw sp a1 -1         ; Load Cnr(n-1, r) from sp-1
-        add a1 a0 a0        ; Add the two results (Cnr(n-1,r) + Cnr(n-1,r-1))///
-        lw sp a1 -2         ; Restore n from sp-2
-        lw sp a2 -3         ; Restore r from sp-3
-        lw sp ra -4         ; Restore return address from sp-4
-        lw 0 t1 neg4        ; Load -4 for stack decrement
-        add t1 sp sp        ; sp -= 4 (deallocate stack space)////
-        jalr ra 0           ; Return to caller
-basCnr  lw 0 a0 pos1        ; Base case: set return value a0 = 1
-        jalr ra 0           ; Return to caller
+main    lw 0 x2 stAddr      ; x2 = stack address
+        lw 0 x12 n           ; x12 = n
+        lw 0 x13 r           ; x13 = r
+        lw 0 x5 cnrAddr      ; Load the address of Cnr into x5
+        jalr x5 x1          ; Jump to Cnr function
+        halt                ; End of progx1m
+cnr     beq 0 x13 basCnr     ; if r == 0, go to basCnr (base case)
+        beq x12 x13 basCnr    ; if n == r, go to basCnr (base case)
+        lw 0 x5 cnrAddr      ; Load the address of Cnr into x5 (for recursion)
+        lw 0 x6 pos4
+        add x6 x2 x2        ; x2 += 4 (allocate stack x2ace)///
+        sw x2 x1 -4         ; Store return address (x1) at x2-4
+        sw x2 x13 -3         ; Store r at x2-3
+        sw x2 x12 -2         ; Store n at x2-2
+        nand 0 0 x6         ; Prepare to decrement n (with negation)
+        add x6 x12 x12        ; n -= 1///
+        jalr x5 x1          ; Recursive call: Cnr(n-1, r)
+        sw x2 x10 -1         ; Store result of Cnr(n-1, r) at x2-1
+        nand 0 0 x6         ; Prepare to decrement r
+        add x6 x13 x13        ; r -= 1///
+        jalr x5 x1          ; Recursive call: Cnr(n-1, r-1)
+        lw x2 x12 -1         ; Load Cnr(n-1, r) from x2-1
+        add x12 x10 x10        ; Add the two results (Cnr(n-1,r) + Cnr(n-1,r-1))///
+        lw x2 x12 -2         ; Restore n from x2-2
+        lw x2 x13 -3         ; Restore r from x2-3
+        lw x2 x1 -4         ; Restore return address from x2-4
+        lw 0 x6 neg4        ; Load -4 for stack decrement
+        add x6 x2 x2        ; x2 -= 4 (deallocate stack x2ace)////
+        jalr x1 0           ; Return to caller
+basCnr  lw 0 x10 pos1        ; Base case: set return value x10 = 1
+        jalr x1 0           ; Return to caller
 stack   noop                ; Placeholder for the stack
-spAddr .fill   stack      ; Address of the stack
+stAddr .fill   stack      ; Address of the stack
