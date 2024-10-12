@@ -237,6 +237,11 @@ void firstPass(FILE *inFilePtr) {
             }
             strcpy(labels[labelCount].label, label);
             labels[labelCount].address = address;
+            if(strlen(labels[labelCount].label) > 6) {
+                printf("error label '%s' too long %d\n", label, address);
+                exit(1);
+                return;
+            }
             printf("Label found: %s, Address: %d\n", labels[labelCount].label, labels[labelCount].address);
             labelCount++;
         }

@@ -8,10 +8,10 @@ x6      noop            ; temp register 1
 x1      noop            ; return address
 pos1    .fill 1       ; constant 1
 neg1    .fill -1      ; constant -1
-overflow  .fill 65536 ; constant 65536 (2^16) for check overflow 16 bit
+overf  .fill 32768 ; constant 32768 (2^15) for check overflow 16 bit
 mulAdr  .fill mul   ; address of 'mul' function
-mcand   .fill 32766  ; multiplicand
-mplier  .fill 10383 ; multiplier
+mcand   .fill 32769  ; multiplicand
+mplier  .fill 1 ; multiplier
 main    lw 0 x2 neg1         ; load x2 with -1
         lw 0 x12 mcand        ; load multiplicand into x12
         lw 0 x13 mplier       ; load multiplier into x13
@@ -22,7 +22,7 @@ mul     sw 0 x2 x2           ; save x2 onto stack
         sw 0 x1 x1           ; save x1 onto stack
         add x0 x0 x10         ; initialize sum (x10) to 0//
         lw 0 x6 neg1         ; load -1 into x6
-        lw 0 x2 overflow       ; load 65536 into x2 (2^16)
+        lw 0 x2 overf       ; load 65536 into x2 (2^16)
         lw 0 x5 pos1         ; initialize x5 to 1 (for bit shifting)
 muladd  nand x12 x5 x1        ; x1 = ~(x12 & x5)
         beq x6 x1 shAdd      ; if x6 == x1 (i.e., if x1 is -1), skip addition

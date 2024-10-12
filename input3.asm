@@ -9,18 +9,18 @@ x1     noop             ; return address
 pos1   .fill 1          ; Constant 1
 pos4   .fill 4          ; Constant 4 (for stack increment)
 neg4   .fill -4         ; Constant -4 (for stack decrement)
-cnrAddr .fill cnr        ; Address of the Cnr function
+cnrAdd .fill cnr        ; Address of the Cnr function
 n      .fill 7          ; n = 7 (initial value for n)
 r      .fill 3          ; r = 3 (initial value for r)
-main    lw 0 x2 stAddr      ; x2 = stack address
+main    lw 0 x2 stAdd      ; x2 = stack address
         lw 0 x12 n           ; x12 = n
         lw 0 x13 r           ; x13 = r
-        lw 0 x5 cnrAddr      ; Load the address of Cnr into x5
+        lw 0 x5 cnrAdd      ; Load the address of Cnr into x5
         jalr x5 x1          ; Jump to Cnr function
         halt                ; End of progx1m
 cnr     beq 0 x13 basCnr     ; if r == 0, go to basCnr (base case)
         beq x12 x13 basCnr    ; if n == r, go to basCnr (base case)
-        lw 0 x5 cnrAddr      ; Load the address of Cnr into x5 (for recursion)
+        lw 0 x5 cnrAdd      ; Load the address of Cnr into x5 (for recursion)
         lw 0 x6 pos4
         add x6 x2 x2        ; x2 += 4 (allocate stack x2ace)///
         sw x2 x1 -4         ; Store return address (x1) at x2-4
@@ -44,4 +44,4 @@ cnr     beq 0 x13 basCnr     ; if r == 0, go to basCnr (base case)
 basCnr  lw 0 x10 pos1        ; Base case: set return value x10 = 1
         jalr x1 0           ; Return to caller
 stack   noop                ; Placeholder for the stack
-stAddr .fill   stack      ; Address of the stack
+stAdd .fill   stack      ; Address of the stack
