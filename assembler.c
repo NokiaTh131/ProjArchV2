@@ -178,7 +178,6 @@ int main(int argc, char *argv[])
  *     0 if reached end of file
  *     1 if all went well
  *
- * exit(1) if line is too long.
  */
 int readAndParse(FILE *inFilePtr, char *label, char *opcode, char *arg0,
     char *arg1, char *arg2)
@@ -194,13 +193,6 @@ int readAndParse(FILE *inFilePtr, char *label, char *opcode, char *arg0,
 	/* reached end of file */
         return(0);
     }
-
-    /* check for line too long (by looking for a \n) */
-    // if (strchr(line, '\n') == NULL) {
-    //     /* line too long */
-	//     printf("error: line too long\n");
-	//     exit(1);
-    // }
 
     /* is there a label? */
     ptr = line;
@@ -225,6 +217,10 @@ int isNumber(char *string)
     return( (sscanf(string, "%d", &i)) == 1);
 }
 
+/*
+ * Read and parse a line of the assembly-language file for first time to get symbolic address.
+ * and store it in Label[] 
+ */
 void firstPass(FILE *inFilePtr) {
     char label[MAXLINELENGTH], opcode[MAXLINELENGTH], arg0[MAXLINELENGTH], arg1[MAXLINELENGTH], arg2[MAXLINELENGTH];
     int address = 0;
@@ -249,6 +245,12 @@ void firstPass(FILE *inFilePtr) {
     }
 }
 
+/*
+ * this function will resolve label by check label in labels[] 
+ * if have symbol from output return address 
+ * else print error exit(1)  
+ * 
+ */
 int resolveLabel(char *symbol) {
     for (int i = 0; i < labelCount; i++) {
         if (strcmp(labels[i].label, symbol) == 0) {
