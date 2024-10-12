@@ -149,6 +149,11 @@ int main(int argc, char *argv[])
             } else {
                 field = atoi(arg0);
             }
+
+            if (field > 32767 || field < -32768) {
+                printf("error offset bit is too much %s\n", arg2);
+                exit(1);
+            }
             
             machineCode = field ;
             
