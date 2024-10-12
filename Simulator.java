@@ -5,6 +5,7 @@ import java.io.IOException;
 
 public class Simulator {
     public static void main(String[] args) {
+        //ccheck invalid number of args
         if (args.length != 1) {
             System.out.println("java Simulator <file_name>");
             System.exit(1);
@@ -12,6 +13,7 @@ public class Simulator {
         String filename = args[0];
         File inputFile = new File(filename);
         boolean isExist = inputFile.exists();
+        //if file is doesn't exist do exit(1)
         if (!isExist) {
             System.out.println(filename + "' doesn't exist.");
             System.exit(1);
@@ -19,6 +21,7 @@ public class Simulator {
         Stage stage = new Stage();
         int[] memory = stage.getMemory();
         int pc = 0;
+        //read file each line to set arra memmmor to be address of each instruction Then do simulate   
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
             String line;
             while ((line = reader.readLine()) != null) {

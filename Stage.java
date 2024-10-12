@@ -27,6 +27,9 @@ public class Stage {
     }
 
     //execute
+    /*
+     * this will decode each memmory(address) iterate 
+     */
     public synchronized void iterate() {
         nextPc = (pc + 1) % MEMORY_SIZE;
         decoder.decode(this);
