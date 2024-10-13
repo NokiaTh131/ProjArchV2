@@ -22,14 +22,14 @@ mul     sw 0 x2 x2           ; save x2 onto stack
         sw 0 x1 x1           ; save x1 onto stack
         add x0 x0 x10         ; initialize sum (x10) to 0//
         lw 0 x6 neg1         ; load -1 into x6
-        lw 0 x2 overf       ; load 32768 into x2 (2^16)
+        lw 0 x2 overf       ; load 32768 into x2 (2^15)
         lw 0 x5 pos1         ; initialize x5 to 1 (for bit shifting)
 muladd  nand x12 x5 x1        ; x1 = ~(x12 & x5)
         beq x6 x1 shAdd      ; if x6 == x1 (i.e., if x1 is -1), skip addition
         add x13 x10 x10         ; sum (x10) += x13 (multiplier)
 shAdd   add x5 x5 x5         ; x5 <<= 1 (bit shift left)
         add x13 x13 x13         ; x13 <<= 1 (bit shift left)
-        beq x2 x5 mulret     ; if x5 == 2^16, return from 'mul'
+        beq x2 x5 mulret     ; if x5 == 2^15, return from 'mul'
         beq 0 0 muladd       ; otherwise, loop back to 'muladd'
 mulret  lw 0 x1 x1           ; restore x1 from stack
         lw 0 x2 x2           ; restore x2 from stack
