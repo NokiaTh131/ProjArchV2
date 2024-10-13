@@ -17,29 +17,29 @@ main    lw 0 x2 stAdd      ; x2 = stack address
         lw 0 x13 r           ; x13 = r
         lw 0 x5 cnrAdd      ; Load the address of Cnr into x5
         jalr x5 x1          ; Jump to Cnr function
-        halt                ; End of progx1m
+        halt                ; End of program
 cnr     beq 0 x13 basCnr     ; if r == 0, go to basCnr (base case)
         beq x12 x13 basCnr    ; if n == r, go to basCnr (base case)
         lw 0 x5 cnrAdd      ; Load the address of Cnr into x5 (for recursion)
-        lw 0 x6 pos4
-        add x6 x2 x2        ; x2 += 4 (allocate stack x2ace)///
+        lw 0 x6 pos4        ; Load 4 into x6 
+        add x6 x2 x2        ; x2 += 4 (allocate stack x2ace)
         sw x2 x1 -4         ; Store return address (x1) at x2-4
         sw x2 x13 -3         ; Store r at x2-3
         sw x2 x12 -2         ; Store n at x2-2
         nand 0 0 x6         ; Prepare to decrement n (with negation)
-        add x6 x12 x12        ; n -= 1///
+        add x6 x12 x12        ; n -= 1
         jalr x5 x1          ; Recursive call: Cnr(n-1, r)
         sw x2 x10 -1         ; Store result of Cnr(n-1, r) at x2-1
         nand 0 0 x6         ; Prepare to decrement r
-        add x6 x13 x13        ; r -= 1///
+        add x6 x13 x13        ; r -= 1
         jalr x5 x1          ; Recursive call: Cnr(n-1, r-1)
         lw x2 x12 -1         ; Load Cnr(n-1, r) from x2-1
-        add x12 x10 x10        ; Add the two results (Cnr(n-1,r) + Cnr(n-1,r-1))///
+        add x12 x10 x10        ; Add the two results (Cnr(n-1,r) + Cnr(n-1,r-1))
         lw x2 x12 -2         ; Restore n from x2-2
         lw x2 x13 -3         ; Restore r from x2-3
         lw x2 x1 -4         ; Restore return address from x2-4
         lw 0 x6 neg4        ; Load -4 for stack decrement
-        add x6 x2 x2        ; x2 -= 4 (deallocate stack x2ace)////
+        add x6 x2 x2        ; x2 -= 4 (deallocate stack x2ace)
         jalr x1 0           ; Return to caller
 basCnr  lw 0 x10 pos1        ; Base case: set return value x10 = 1
         jalr x1 0           ; Return to caller

@@ -1,4 +1,4 @@
-x0      beq 0 0 main    ; bx1nch to 'main' (register 0 used)
+x0      beq 0 0 main    ; Branch to 'main' (register 0 used)
 x12      noop            ; function argument 1
 x13      noop            ; function argument 2
 x10      noop            ; return value
@@ -17,7 +17,7 @@ main    lw 0 x2 neg1         ; load x2 with -1
         lw 0 x13 mplier       ; load multiplier into x13
         lw 0 x5 mulAdr       ; load address of 'mul' function into x5
         jalr x5 x1           ; jump to 'mul' and save return address in x1
-        halt                 ; end progx1m
+        halt                 ; end program
 mul     sw 0 x2 x2           ; save x2 onto stack
         sw 0 x1 x1           ; save x1 onto stack
         add x0 x0 x10         ; initialize sum (x10) to 0//

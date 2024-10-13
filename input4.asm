@@ -1,4 +1,4 @@
-x0     beq 0 0 main     ; Bx1nch to main
+x0     beq 0 0 main     ; Branch to main
 x12     noop             ; function argument 1 (n)
 x13     noop             ; function argument 2 (r)
 x10     noop             ; return value (for the combination result)
@@ -18,11 +18,11 @@ main    lw 0 x2 stAddr      ; x2 = stack address
         lw 0 x13 r           ; x13 = r
         lw 0 x5 pnrAdd      ; Load the address of Cnr into x5
         jalr x5 x1          ; Jump to Cnr function
-        halt                ; End of progx1m
-pnr     beq 0 x13 bax2nr     ; if r == 0, go to bax2nr (base case)
+        halt                ; End of program
+pnr     beq 0 x13 basPnr     ; if r == 0, go to basPnr (base case)
         lw 0 x5 pnrAdd      ; Load the address of Pnr into x5 (for recursion)
-        lw 0 x6 pos3
-        add x6 x2 x2        ; x2 += 4 (allocate stack x2ace)///
+        lw 0 x6 pos3        ; Load 3 into x6
+        add x6 x2 x2        ; x2 += 4 (allocate stack space)
         sw x2 x1 -3         ; Store return address (x1) at x2-4
         sw x2 x13 -2         ; Store r at x2-3
         sw x2 x12 -1         ; Store n at x2-2
@@ -38,9 +38,9 @@ pnr     beq 0 x13 bax2nr     ; if r == 0, go to bax2nr (base case)
         lw x2 x12 -1
         lw x2 x1 -3         ; Restore return address from x2-4
         lw 0 x6 neg3        ; Load -3 for stack decrement
-        add x6 x2 x2        ; x2 -= 3 (deallocate stack x2ace)////
+        add x6 x2 x2        ; x2 -= 3 (deallocate stack space)
         jalr x1 0           ; Return to caller
-bax2nr  lw 0 x10 pos1        ; Base case: set return value x10 = 1
+basPnr  lw 0 x10 pos1        ; Base case: set return value x10 = 1
         jalr x1 0           ; Return to caller
 mult    add 0 0 x5       ; Initialize x5 to 0 (this will hold the result)
         beq x12 0 done  ; If x12 == 0, return (multiplication by 0 results in 0)
